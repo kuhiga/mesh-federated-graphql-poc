@@ -1,0 +1,22 @@
+sources:
+  - name: Stores
+    handler:
+      graphql:
+        endpoint: http://0.0.0.0:3004/graphql
+  - name: Test
+    handler:
+      graphql:
+        endpoint: http://0.0.0.0:3005/graphql
+transforms:
+  - filterSchema:
+      filters:
+        - Query.stores
+        - Query.test
+additionalTypeDefs: |
+  extend type Store {
+    bookSells: [Sells!]!
+  }
+
+additionalResolvers: 
+    - "./resolvers"
+    

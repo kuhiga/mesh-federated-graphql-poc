@@ -1,0 +1,19 @@
+type Store {
+  id: ID!
+  name: String!
+  location: String!
+  bookSells: [Sells!]!
+}
+
+type Sells {
+  bookId: ID!
+  sellsCount: Int!
+  monthYear: String
+  storeId: ID!
+}
+
+type Test {
+  id: ID!
+  name: String!
+  message: String!
+}

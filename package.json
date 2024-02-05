@@ -1,0 +1,16 @@
+{
+  "name": "graphql-mesh-docs-first-gateway",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
+  },
+  "scripts": {
+    "start-multiple-sources-prog-resolvers": "concurrently --kill-others \"yarn workspace test-service start\" \"yarn workspace stores-service start\"  \"yarn workspace multiple-sources-prog-resolvers start\""
+  },
+  "dependencies": {
+    "concurrently": "^8.2.0"
+  }
+}

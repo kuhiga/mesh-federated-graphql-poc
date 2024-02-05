@@ -1,0 +1,13 @@
+schema {
+  query: Query
+}
+
+type Test {
+  id: ID!
+  name: String!
+  message: String!
+}
+
+type Query {
+  test: [Test!]!
+}
