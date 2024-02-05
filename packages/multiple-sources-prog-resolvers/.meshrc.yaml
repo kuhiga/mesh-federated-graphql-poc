@@ -7,16 +7,16 @@ sources:
     handler:
       graphql:
         endpoint: http://0.0.0.0:3005/graphql
-transforms:
-  - filterSchema:
-      filters:
-        - Query.stores
-        - Query.test
-additionalTypeDefs: |
-  extend type Store {
-    bookSells: [Sells!]!
-  }
+# transforms:
+#   - filterSchema:
+#       filters:
+#         - Query.stores
+#         - Query.test
+# additionalTypeDefs: |
+#   extend type Store {
+#     bookSells: [Sells!]!
+#   }
 
-additionalResolvers: 
-    - "./resolvers"
+# additionalResolvers: 
+#     - "./resolvers"
     

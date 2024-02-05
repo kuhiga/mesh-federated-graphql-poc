@@ -15,6 +15,7 @@ export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: 
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
 export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
+export type RequireFields<T, K extends keyof T> = Omit<T, K> & { [P in K]-?: NonNullable<T[P]> };
 
 
 
@@ -27,11 +28,21 @@ export type Scalars = {
   Float: { input: number; output: number; }
 };
 
+export type Query = {
+  stores: Array<Store>;
+  bookSells: Array<Sells>;
+  test: Array<Test>;
+};
+
+
+export type QuerybookSellsArgs = {
+  storeId: Scalars['ID']['input'];
+};
+
 export type Store = {
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
   location: Scalars['String']['output'];
-  bookSells: Array<Sells>;
 };
 
 export type Sells = {
@@ -133,6 +144,7 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
+  Query: ResolverTypeWrapper<{}>;
   Store: ResolverTypeWrapper<Store>;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
@@ -144,6 +156,7 @@ export type ResolversTypes = ResolversObject<{
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
+  Query: {};
   Store: Store;
   ID: Scalars['ID']['output'];
   String: Scalars['String']['output'];
@@ -153,11 +166,16 @@ export type ResolversParentTypes = ResolversObject<{
   Test: Test;
 }>;
 
+export type QueryResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
+  stores?: Resolver<Array<ResolversTypes['Store']>, ParentType, ContextType>;
+  bookSells?: Resolver<Array<ResolversTypes['Sells']>, ParentType, ContextType, RequireFields<QuerybookSellsArgs, 'storeId'>>;
+  test?: Resolver<Array<ResolversTypes['Test']>, ParentType, ContextType>;
+}>;
+
 export type StoreResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Store'] = ResolversParentTypes['Store']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   location?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  bookSells?: Resolver<Array<ResolversTypes['Sells']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -177,6 +195,7 @@ export type TestResolvers<ContextType = MeshContext, ParentType extends Resolver
 }>;
 
 export type Resolvers<ContextType = MeshContext> = ResolversObject<{
+  Query?: QueryResolvers<ContextType>;
   Store?: StoreResolvers<ContextType>;
   Sells?: SellsResolvers<ContextType>;
   Test?: TestResolvers<ContextType>;

@@ -1,8 +1,17 @@
+schema {
+  query: Query
+}
+
+type Query {
+  stores: [Store!]!
+  bookSells(storeId: ID!): [Sells!]!
+  test: [Test!]!
+}
+
 type Store {
   id: ID!
   name: String!
   location: String!
-  bookSells: [Sells!]!
 }
 
 type Sells {
